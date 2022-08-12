@@ -935,8 +935,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 window.addEventListener('click', function () {
+  "use strict";
+
   Object(_modules_modal__WEBPACK_IMPORTED_MODULE_0__["default"])();
-  Object(_modules_slides__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  Object(_modules_slides__WEBPACK_IMPORTED_MODULE_1__["default"])('.feedback-slider-item', 'horizontal', '.main-prev-btn', '.main-next-btn');
+  Object(_modules_slides__WEBPACK_IMPORTED_MODULE_1__["default"])('.main-slider-item', 'vertical');
 });
 
 /***/ }),
@@ -1062,17 +1065,74 @@ var modals = function modals() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var slides = function slides(slide, direction, prev, next) {
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var slides = function slides(_slides, direction, prev, next) {
   var slideIndex = 1;
-  var items = document.querySelector(slide);
-  var prevBtn = document.querySelector(prev);
-  var nextBtn = document.querySelector(next);
+  var paused = false;
+  var items = document.querySelectorAll(_slides);
 
   function showSlides(n) {
-    if (n < items.length) {
+    if (n > items.length) {
       slideIndex = 1;
     }
+
+    if (n < 1) {
+      slideIndex = items.length;
+    }
+
+    items.forEach(function (item) {
+      item.classList.add('animated');
+      item.style.display = 'none';
+    });
+    items[slideIndex - 1].style.display = 'block';
   }
+
+  showSlides(slideIndex);
+
+  function changeSlides(n) {
+    showSlides(slideIndex += n);
+  }
+
+  try {
+    var prevBtn = document.querySelector(prev);
+    var nextBtn = document.querySelector(next);
+    prevBtn.addEventListener('click', function () {
+      changeSlides(-1);
+      items[slideIndex - 1].classList.remove('slideInLeft');
+      items[slideIndex - 1].classList.add('slideInRight');
+    });
+    nextBtn.addEventListener('click', function () {
+      changeSlides(1);
+      items[slideIndex - 1].classList.remove('slideInRight');
+      items[slideIndex - 1].classList.add('slideInLeft');
+    });
+  } catch (error) {}
+
+  function activateAnimation() {
+    if (direction === 'vertical') {
+      paused = setInterval(function () {
+        changeSlides(1);
+        items[slideIndex - 1].classList.add('slideInDown');
+      }, 3000);
+    } else {
+      paused = setInterval(function () {
+        changeSlides(1);
+        items[slideIndex - 1].classList.remove('slideInRight');
+        items[slideIndex - 1].classList.add('slideInLeft');
+      }, 3000);
+    }
+  }
+
+  activateAnimation();
+  items[0].parentNode.addEventListener('mouseenter', function () {
+    clearInterval(paused);
+  });
+  items[0].parentNode.addEventListener('mouseleave', function () {
+    activateAnimation();
+  });
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (slides);
