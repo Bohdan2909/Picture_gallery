@@ -3,6 +3,7 @@ import slides from "./modules/slides";
 import forms from "./modules/forms";
 import mask from "./modules/mask";
 import checkTextInputs from "./modules/checkTextInputs";
+import calc from './modules/calc';
 import showMoreStyles from "./modules/showMoreStyles";
 
 
@@ -17,6 +18,7 @@ checkTextInputs('[name="name"]');
 checkTextInputs('[name="message"]');
 // showMoreStyles('.button-styles', '.styles-2');
 showMoreStyles('.button-styles', '#styles .row');
+calc('#size', '#material', '#options', '.promocode', '.calc-price');
 
 
 });
