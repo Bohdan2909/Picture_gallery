@@ -35,6 +35,7 @@ const filter = () => {
       no.classList.add('animated', 'fadeIn');
     }
   };
+  
 function listenrElement (btn, element, ...classes) {
   btn.addEventListener('click', () => {
     typeFilter(element);
